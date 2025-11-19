@@ -13,6 +13,7 @@
             --text: #333;
             --border-radius: 8px;
             --ai-color: #8e44ad;
+            --code-bg: #2d2d2d;
         }
 
         body {
@@ -142,6 +143,66 @@
             background: #eee;
             padding: 0 4px;
             border-radius: 3px;
+        }
+
+        /* --- REFERENCE GUIDE STYLES --- */
+        .ref-section {
+            max-width: 1400px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .ref-card {
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        .ref-card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 8px;
+            text-align: left;
+        }
+
+        .method-row {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .method-sig {
+            font-family: 'Consolas', monospace;
+            color: #d35400;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .method-desc {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .code-snippet {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: 'Consolas', monospace;
+            overflow-x: auto;
         }
 
         /* AI Section Styles */
@@ -418,6 +479,126 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- DETAILED METHOD REFERENCE -->
+    <div class="ref-section">
+        <h2>3. Method Reference & Examples</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Detailed breakdown of methods mentioned in the hierarchy above.</p>
+        
+        <div class="ref-grid">
+            
+            <!-- LIST METHODS -->
+            <div class="ref-card">
+                <h3>List Methods (ArrayList / LinkedList)</h3>
+                
+                <div class="method-row">
+                    <span class="method-sig">add(E element)</span>
+                    <div class="method-desc">Appends element to the end of the list.</div>
+                    <div class="code-snippet">list.add("Apple"); // ["Apple"]</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">add(int index, E element)</span>
+                    <div class="method-desc">Inserts element at specific position. Shifts others right.</div>
+                    <div class="code-snippet">list.add(0, "Pear"); // ["Pear", "Apple"]</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">get(int index)</span>
+                    <div class="method-desc">Returns element at position. Throws exception if out of bounds.</div>
+                    <div class="code-snippet">String s = list.get(1); // Returns "Apple"</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">set(int index, E element)</span>
+                    <div class="method-desc">Replaces element at position.</div>
+                    <div class="code-snippet">list.set(1, "Banana"); // ["Pear", "Banana"]</div>
+                </div>
+            </div>
+
+            <!-- QUEUE METHODS -->
+            <div class="ref-card">
+                <h3>Queue Methods (PriorityQueue)</h3>
+                
+                <div class="method-row">
+                    <span class="method-sig">offer(E e)</span>
+                    <div class="method-desc">Adds element to queue. Preferable to add() for capacity-restricted queues.</div>
+                    <div class="code-snippet">pq.offer(10); // Returns true</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">poll()</span>
+                    <div class="method-desc">Retrieves and REMOVES the head. Returns null if empty.</div>
+                    <div class="code-snippet">Integer head = pq.poll(); // 10 (Queue now empty)</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">peek()</span>
+                    <div class="method-desc">Retrieves but DOES NOT remove the head. Returns null if empty.</div>
+                    <div class="code-snippet">Integer head = pq.peek(); // 10 (Queue still has 10)</div>
+                </div>
+            </div>
+
+            <!-- MAP METHODS -->
+            <div class="ref-card">
+                <h3>Map Methods (HashMap)</h3>
+                
+                <div class="method-row">
+                    <span class="method-sig">put(K key, V value)</span>
+                    <div class="method-desc">Associates key with value. Overwrites if key exists.</div>
+                    <div class="code-snippet">map.put("A", 1); // {A=1}</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">get(Object key)</span>
+                    <div class="method-desc">Returns value for key, or null if not found.</div>
+                    <div class="code-snippet">map.get("A"); // Returns 1</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">getOrDefault(K key, V def)</span>
+                    <div class="method-desc">Returns value if exists, else returns default value.</div>
+                    <div class="code-snippet">map.getOrDefault("Z", 0); // Returns 0</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">containsKey(Object key)</span>
+                    <div class="method-desc">Returns true if this map contains a mapping for the specified key.</div>
+                    <div class="code-snippet">if(map.containsKey("A")) { ... }</div>
+                </div>
+            </div>
+
+            <!-- MAP VIEWS -->
+            <div class="ref-card">
+                <h3>Map Views & Entry</h3>
+                
+                <div class="method-row">
+                    <span class="method-sig">entrySet()</span>
+                    <div class="method-desc">Returns a Set view of the mappings. Best for iterating.</div>
+                    <div class="code-snippet">for(Map.Entry&lt;K,V&gt; e : map.entrySet())</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">keySet()</span>
+                    <div class="method-desc">Returns a Set view of the keys.</div>
+                    <div class="code-snippet">Set&lt;String&gt; keys = map.keySet();</div>
+                </div>
+
+                <div class="method-row">
+                    <span class="method-sig">values()</span>
+                    <div class="method-desc">Returns a Collection view of the values.</div>
+                    <div class="code-snippet">Collection&lt;Integer&gt; vals = map.values();</div>
+                </div>
+                
+                <div class="method-row">
+                    <span class="method-sig">entry.getValue()</span>
+                    <div class="method-desc">Gets value from a specific Map.Entry object.</div>
+                    <div class="code-snippet">int val = entry.getValue();</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- GEMINI AI SECTION -->
