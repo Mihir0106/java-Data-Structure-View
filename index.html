@@ -14,6 +14,8 @@
             --border-radius: 8px;
             --ai-color: #8e44ad;
             --code-bg: #2d2d2d;
+            --complexity-bg: #e8f6f3;
+            --complexity-text: #16a085;
         }
 
         body {
@@ -181,11 +183,36 @@
             padding-bottom: 10px;
         }
 
+        .method-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
         .method-sig {
             font-family: 'Consolas', monospace;
             color: #d35400;
             font-weight: bold;
+        }
+
+        .complexity {
+            font-size: 0.75rem;
+            background-color: var(--complexity-bg);
+            color: var(--complexity-text);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            border: 1px solid #d1f2eb;
+        }
+
+        .complexity-detail {
+            font-size: 0.75rem;
+            color: #7f8c8d;
             display: block;
+            margin-top: 2px;
             margin-bottom: 4px;
         }
 
@@ -483,118 +510,314 @@
 
     <!-- DETAILED METHOD REFERENCE -->
     <div class="ref-section">
-        <h2>3. Method Reference & Examples</h2>
-        <p style="text-align: center; margin-bottom: 30px;">Detailed breakdown of methods mentioned in the hierarchy above.</p>
+        <h2>3. Method Reference & Complexity Guide</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Detailed breakdown with Time & Space Complexity.</p>
         
         <div class="ref-grid">
             
             <!-- LIST METHODS -->
             <div class="ref-card">
-                <h3>List Methods (ArrayList / LinkedList)</h3>
+                <h3>List Methods (ArrayList vs LinkedList)</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <strong>Space:</strong> O(n) for both.<br>
+                    <strong>Key Diff:</strong> ArrayList = Fast Read. LinkedList = Fast Add/Remove at ends.
+                </p>
                 
                 <div class="method-row">
-                    <span class="method-sig">add(E element)</span>
-                    <div class="method-desc">Appends element to the end of the list.</div>
-                    <div class="code-snippet">list.add("Apple"); // ["Apple"]</div>
+                    <div class="method-header">
+                        <span class="method-sig">add(E element)</span>
+                        <span class="complexity">AL: O(1) | LL: O(1)</span>
+                    </div>
+                    <div class="method-desc">Appends element to the end. (ArrayList is amortized O(1)).</div>
+                    <div class="code-snippet">list.add("Apple");</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">add(int index, E element)</span>
-                    <div class="method-desc">Inserts element at specific position. Shifts others right.</div>
-                    <div class="code-snippet">list.add(0, "Pear"); // ["Pear", "Apple"]</div>
+                    <div class="method-header">
+                        <span class="method-sig">add(int index, E element)</span>
+                        <span class="complexity">AL: O(n) | LL: O(n)</span>
+                    </div>
+                    <div class="method-desc">
+                        <strong>AL:</strong> Shifts elements right (Slow).<br>
+                        <strong>LL:</strong> Traverse to node (Slow), then insert (Fast).
+                    </div>
+                    <div class="code-snippet">list.add(0, "Pear");</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">get(int index)</span>
-                    <div class="method-desc">Returns element at position. Throws exception if out of bounds.</div>
-                    <div class="code-snippet">String s = list.get(1); // Returns "Apple"</div>
+                    <div class="method-header">
+                        <span class="method-sig">get(int index)</span>
+                        <span class="complexity">AL: O(1) | LL: O(n)</span>
+                    </div>
+                    <div class="method-desc">
+                        <strong>AL:</strong> Instant access.<br>
+                        <strong>LL:</strong> Must traverse from head/tail.
+                    </div>
+                    <div class="code-snippet">list.get(1);</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">set(int index, E element)</span>
-                    <div class="method-desc">Replaces element at position.</div>
-                    <div class="code-snippet">list.set(1, "Banana"); // ["Pear", "Banana"]</div>
+                    <div class="method-header">
+                        <span class="method-sig">remove(int index)</span>
+                        <span class="complexity">AL: O(n) | LL: O(n)</span>
+                    </div>
+                    <div class="method-desc">Removing requires shifting (AL) or seeking (LL).</div>
+                    <div class="code-snippet">list.remove(0);</div>
                 </div>
             </div>
 
             <!-- QUEUE METHODS -->
             <div class="ref-card">
-                <h3>Queue Methods (PriorityQueue)</h3>
+                <h3>PriorityQueue Methods (Heap)</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <strong>Space:</strong> O(n). Based on Binary Heap.
+                </p>
                 
                 <div class="method-row">
-                    <span class="method-sig">offer(E e)</span>
-                    <div class="method-desc">Adds element to queue. Preferable to add() for capacity-restricted queues.</div>
-                    <div class="code-snippet">pq.offer(10); // Returns true</div>
+                    <div class="method-header">
+                        <span class="method-sig">offer(E e)</span>
+                        <span class="complexity">Time: O(log n)</span>
+                    </div>
+                    <div class="method-desc">Adds element. Needs "Heapify Up" to fix order.</div>
+                    <div class="code-snippet">pq.offer(10);</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">poll()</span>
-                    <div class="method-desc">Retrieves and REMOVES the head. Returns null if empty.</div>
-                    <div class="code-snippet">Integer head = pq.poll(); // 10 (Queue now empty)</div>
+                    <div class="method-header">
+                        <span class="method-sig">poll()</span>
+                        <span class="complexity">Time: O(log n)</span>
+                    </div>
+                    <div class="method-desc">Removes head. Needs "Heapify Down" to fix order.</div>
+                    <div class="code-snippet">pq.poll();</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">peek()</span>
-                    <div class="method-desc">Retrieves but DOES NOT remove the head. Returns null if empty.</div>
-                    <div class="code-snippet">Integer head = pq.peek(); // 10 (Queue still has 10)</div>
+                    <div class="method-header">
+                        <span class="method-sig">peek()</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Instantly view the top element (root of Heap).</div>
+                    <div class="code-snippet">pq.peek();</div>
                 </div>
             </div>
 
             <!-- MAP METHODS -->
             <div class="ref-card">
-                <h3>Map Methods (HashMap)</h3>
+                <h3>HashMap Methods</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <strong>Space:</strong> O(n).<br>
+                    <strong>Note:</strong> Complexity is "Average Case". Worst case O(n) if hash collisions occur (rare).
+                </p>
                 
                 <div class="method-row">
-                    <span class="method-sig">put(K key, V value)</span>
-                    <div class="method-desc">Associates key with value. Overwrites if key exists.</div>
-                    <div class="code-snippet">map.put("A", 1); // {A=1}</div>
+                    <div class="method-header">
+                        <span class="method-sig">put(K key, V value)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Computes Hash -> Finds Bucket -> Inserts.</div>
+                    <div class="code-snippet">map.put("A", 1);</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">get(Object key)</span>
-                    <div class="method-desc">Returns value for key, or null if not found.</div>
-                    <div class="code-snippet">map.get("A"); // Returns 1</div>
+                    <div class="method-header">
+                        <span class="method-sig">get(Object key)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Computes Hash -> Finds Bucket -> Returns Value.</div>
+                    <div class="code-snippet">map.get("A");</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">getOrDefault(K key, V def)</span>
-                    <div class="method-desc">Returns value if exists, else returns default value.</div>
-                    <div class="code-snippet">map.getOrDefault("Z", 0); // Returns 0</div>
+                    <div class="method-header">
+                        <span class="method-sig">containsKey(Key)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc"> checks if hash bucket exists and contains key.</div>
+                    <div class="code-snippet">map.containsKey("A");</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">containsKey(Object key)</span>
-                    <div class="method-desc">Returns true if this map contains a mapping for the specified key.</div>
-                    <div class="code-snippet">if(map.containsKey("A")) { ... }</div>
+                    <div class="method-header">
+                        <span class="method-sig">remove(Object key)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Unlinks the node from the bucket.</div>
+                    <div class="code-snippet">map.remove("A");</div>
                 </div>
             </div>
 
-            <!-- MAP VIEWS -->
+            <!-- TREEMAP METHODS -->
             <div class="ref-card">
-                <h3>Map Views & Entry</h3>
+                <h3>TreeMap Methods (Red-Black Tree)</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <strong>Space:</strong> O(n).<br>
+                    <strong>Note:</strong> Slower than HashMap, but keeps keys sorted.
+                </p>
                 
                 <div class="method-row">
-                    <span class="method-sig">entrySet()</span>
-                    <div class="method-desc">Returns a Set view of the mappings. Best for iterating.</div>
-                    <div class="code-snippet">for(Map.Entry&lt;K,V&gt; e : map.entrySet())</div>
+                    <div class="method-header">
+                        <span class="method-sig">put(K key, V value)</span>
+                        <span class="complexity">Time: O(log n)</span>
+                    </div>
+                    <div class="method-desc">Tree traversal to find correct spot.</div>
+                    <div class="code-snippet">treeMap.put(5, "A");</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">keySet()</span>
-                    <div class="method-desc">Returns a Set view of the keys.</div>
-                    <div class="code-snippet">Set&lt;String&gt; keys = map.keySet();</div>
+                    <div class="method-header">
+                        <span class="method-sig">get(Object key)</span>
+                        <span class="complexity">Time: O(log n)</span>
+                    </div>
+                    <div class="method-desc">Binary Search traversal.</div>
+                    <div class="code-snippet">treeMap.get(5);</div>
                 </div>
 
                 <div class="method-row">
-                    <span class="method-sig">values()</span>
-                    <div class="method-desc">Returns a Collection view of the values.</div>
-                    <div class="code-snippet">Collection&lt;Integer&gt; vals = map.values();</div>
+                    <div class="method-header">
+                        <span class="method-sig">firstKey() / lastKey()</span>
+                        <span class="complexity">Time: O(log n)</span>
+                    </div>
+                    <div class="method-desc">Find smallest or largest key.</div>
+                    <div class="code-snippet">treeMap.firstKey();</div>
                 </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NEW SECTION: Generics & Primitives Rules -->
+    <div class="ref-section" style="margin-top: 20px;">
+        <h2>4. Generics, Primitives & Arrays Rules</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Why <code>PriorityQueue&lt;int[]&gt;</code> works but <code>Map&lt;int,int&gt;</code> doesn't.</p>
+        
+        <div class="ref-grid">
+            <div class="ref-card">
+                <h3>The Golden Rule of Generics</h3>
+                <div class="method-desc">
+                    Generic types (<code>&lt;T&gt;</code>) <strong>MUST</strong> be Reference Types (Objects). They cannot be Primitives.
+                </div>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: #555;">
+                    <li>❌ <code>List&lt;int&gt;</code> (Primitive)</li>
+                    <li>✅ <code>List&lt;Integer&gt;</code> (Wrapper Object)</li>
+                    <li>✅ <code>List&lt;String&gt;</code> (Object)</li>
+                </ul>
+            </div>
+
+            <div class="ref-card">
+                <h3>The Array Exception</h3>
+                <div class="method-desc">
+                    In Java, <strong>Arrays are Objects</strong>. Even an array of primitives (<code>int[]</code>) is an Object on the Heap.
+                </div>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: #555;">
+                    <li>✅ <code>List&lt;int[]&gt;</code> (List of Integer Arrays)</li>
+                    <li>✅ <code>PriorityQueue&lt;int[]&gt;</code> (Queue of Arrays)</li>
+                </ul>
+            </div>
+
+            <div class="ref-card" style="grid-column: 1 / -1;">
+                <h3>Valid vs Invalid Examples</h3>
+                <table style="width:100%; font-size: 0.9rem; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid #eee; text-align:left;">
+                        <th style="padding:8px;">Code</th>
+                        <th style="padding:8px;">Valid?</th>
+                        <th style="padding:8px;">Reason</th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding:8px; font-family:monospace;">PriorityQueue&lt;int&gt;</td>
+                        <td style="padding:8px;">❌ No</td>
+                        <td style="padding:8px;"><code>int</code> is a primitive.</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding:8px; font-family:monospace;">PriorityQueue&lt;Integer&gt;</td>
+                        <td style="padding:8px;">✅ Yes</td>
+                        <td style="padding:8px;"><code>Integer</code> is a Wrapper Object.</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding:8px; font-family:monospace;">PriorityQueue&lt;int[]&gt;</td>
+                        <td style="padding:8px;">✅ Yes</td>
+                        <td style="padding:8px;"><code>int[]</code> (Array) is an Object.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px; font-family:monospace;">Map&lt;int, int&gt;</td>
+                        <td style="padding:8px;">❌ No</td>
+                        <td style="padding:8px;">Primitives not allowed in <code>&lt;K,V&gt;</code>.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: Essential Utilities -->
+    <div class="ref-section" style="margin-top: 20px;">
+        <h2>5. Essential Utilities (Arrays & Collections)</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Helper methods you use every day.</p>
+        
+        <div class="ref-grid">
+            
+            <!-- Arrays Class -->
+            <div class="ref-card">
+                <h3>Arrays Class Helpers</h3>
                 
                 <div class="method-row">
-                    <span class="method-sig">entry.getValue()</span>
-                    <div class="method-desc">Gets value from a specific Map.Entry object.</div>
-                    <div class="code-snippet">int val = entry.getValue();</div>
+                    <div class="method-header">
+                        <span class="method-sig">Arrays.asList(T... a)</span>
+                        <span class="complexity">O(1)</span>
+                    </div>
+                    <div class="method-desc">
+                        Creates a <strong>fixed-size</strong> list backed by the array.
+                        <br><span style="color:red; font-size:0.8rem;">⚠️ Cannot add/remove elements!</span>
+                    </div>
+                    <div class="code-snippet">List&lt;String&gt; list = Arrays.asList("A", "B");</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Arrays.sort(int[] a)</span>
+                        <span class="complexity">O(N log N)</span>
+                    </div>
+                    <div class="method-desc">Sorts primitive arrays (Dual-Pivot Quicksort).</div>
+                    <div class="code-snippet">Arrays.sort(arr);</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Arrays.toString(arr)</span>
+                        <span class="complexity">O(N)</span>
+                    </div>
+                    <div class="method-desc">Pretty prints array contents (essential for debugging).</div>
+                    <div class="code-snippet">System.out.println(Arrays.toString(arr));</div>
+                </div>
+            </div>
+
+            <!-- Collections Class -->
+            <div class="ref-card">
+                <h3>Collections Class Helpers</h3>
+                
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Collections.sort(List)</span>
+                        <span class="complexity">O(N log N)</span>
+                    </div>
+                    <div class="method-desc">Sorts a List (TimSort - Merge/Insertion hybrid).</div>
+                    <div class="code-snippet">Collections.sort(list);</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Collections.reverse(List)</span>
+                        <span class="complexity">O(N)</span>
+                    </div>
+                    <div class="method-desc">Reverses the order of elements in a List.</div>
+                    <div class="code-snippet">Collections.reverse(list);</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Collections.max(Coll)</span>
+                        <span class="complexity">O(N)</span>
+                    </div>
+                    <div class="method-desc">Finds the max element based on natural order.</div>
+                    <div class="code-snippet">int max = Collections.max(list);</div>
                 </div>
             </div>
 
