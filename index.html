@@ -16,6 +16,7 @@
             --code-bg: #2d2d2d;
             --complexity-bg: #e8f6f3;
             --complexity-text: #16a085;
+            --mm-line: #bdc3c7;
         }
 
         body {
@@ -232,6 +233,64 @@
             overflow-x: auto;
         }
 
+        /* --- MIND MAP STYLES --- */
+        .mindmap-tree ul {
+            padding-left: 20px;
+            list-style: none;
+            border-left: 2px solid var(--mm-line);
+        }
+        
+        .mindmap-tree li {
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .mindmap-tree li::before {
+            content: '';
+            position: absolute;
+            left: -20px; /* connects to border-left of ul */
+            top: 24px; /* vertical center of node roughly */
+            width: 18px;
+            height: 2px;
+            background: var(--mm-line);
+        }
+
+        /* Remove connector for root */
+        .mindmap-tree > ul {
+            border-left: none;
+            padding-left: 0;
+        }
+        .mindmap-tree > ul > li::before {
+            display: none;
+        }
+
+        .mm-node {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .mm-pkg { background: #34495e; color: white; border: none; }
+        .mm-int { background: #f0f8ff; color: var(--secondary); border-color: var(--secondary); }
+        .mm-abs { background: #ecf0f1; color: #7f8c8d; border-style: dashed; font-style: italic; } /* Abstract Classes */
+        .mm-cls { background: #fff5f5; color: var(--accent); border-color: var(--accent); }
+        .mm-util { background: #fff9db; color: #f39c12; border-color: #f39c12; }
+
+        .mm-legacy {
+            font-size: 0.7rem;
+            background: #95a5a6;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-left: 5px;
+            vertical-align: middle;
+            font-weight: normal;
+        }
+
         /* AI Section Styles */
         .ai-panel {
             max-width: 1400px;
@@ -336,6 +395,7 @@
             .class { margin-left: 10px; }
             .ai-controls { flex-direction: column; }
             .btn-ai { width: 100%; justify-content: center; }
+            .mindmap-tree ul { border-left: 1px dashed #ccc; }
         }
     </style>
 </head>
@@ -821,6 +881,112 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- NEW SECTION: Mind Map -->
+    <div class="ref-section" style="margin-top: 20px;">
+        <h2>6. The Big Picture: java.util Hierarchy</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Visualizing the package structure (Blue = Interface, Red = Class, Dashed = Abstract).</p>
+        
+        <div class="mindmap-tree" style="display: flex; justify-content: center;">
+            <ul>
+                <li>
+                    <span class="mm-node mm-pkg">package java.util</span>
+                    <ul>
+                        <li>
+                            <span class="mm-node mm-int">Collection &lt;E&gt;</span> (Interface)
+                            <ul>
+                                <li>
+                                    <span class="mm-node mm-abs">AbstractCollection</span>
+                                    <ul>
+                                        <li>
+                                            <span class="mm-node mm-int">List &lt;E&gt;</span>
+                                            <ul>
+                                                <li>
+                                                    <span class="mm-node mm-abs">AbstractList</span>
+                                                    <ul>
+                                                        <li><span class="mm-node mm-cls">ArrayList</span></li>
+                                                        <li><span class="mm-node mm-cls">Vector</span> <span class="mm-legacy">Legacy</span></li>
+                                                        <li>
+                                                            <span class="mm-node mm-abs">AbstractSequentialList</span>
+                                                            <ul>
+                                                                <li><span class="mm-node mm-cls">LinkedList</span></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span class="mm-node mm-int">Set &lt;E&gt;</span>
+                                            <ul>
+                                                <li>
+                                                    <span class="mm-node mm-abs">AbstractSet</span>
+                                                    <ul>
+                                                        <li><span class="mm-node mm-cls">HashSet</span></li>
+                                                        <li><span class="mm-node mm-cls">LinkedHashSet</span></li>
+                                                        <li>
+                                                            <span class="mm-node mm-int">SortedSet</span> &rarr; <span class="mm-node mm-int">NavigableSet</span>
+                                                            <ul>
+                                                                <li><span class="mm-node mm-cls">TreeSet</span></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span class="mm-node mm-int">Queue &lt;E&gt;</span>
+                                            <ul>
+                                                <li><span class="mm-node mm-cls">PriorityQueue</span></li>
+                                                <li>
+                                                    <span class="mm-node mm-int">Deque</span>
+                                                    <ul>
+                                                        <li><span class="mm-node mm-cls">ArrayDeque</span></li>
+                                                        <li><span class="mm-node mm-cls">LinkedList</span></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="margin-top: 20px;">
+                            <span class="mm-node mm-int">Map &lt;K,V&gt;</span> (Interface)
+                            <ul>
+                                <li>
+                                    <span class="mm-node mm-abs">AbstractMap</span>
+                                    <ul>
+                                        <li><span class="mm-node mm-cls">HashMap</span></li>
+                                        <li><span class="mm-node mm-cls">LinkedHashMap</span></li>
+                                        <li>
+                                            <span class="mm-node mm-int">SortedMap</span> &rarr; <span class="mm-node mm-int">NavigableMap</span>
+                                            <ul>
+                                                <li><span class="mm-node mm-cls">TreeMap</span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <span class="mm-node mm-abs">Dictionary</span> <span class="mm-legacy">Legacy</span>
+                                    <ul>
+                                        <li><span class="mm-node mm-cls">Hashtable</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="margin-top: 20px;">
+                            <span class="mm-node mm-util">Utilities</span>
+                            <ul>
+                                <li><span class="mm-node mm-cls">Collections</span></li>
+                                <li><span class="mm-node mm-cls">Arrays</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 
