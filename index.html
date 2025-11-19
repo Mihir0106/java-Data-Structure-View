@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Collections Framework Cheat Sheet + AI</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --text: #333;
+            --border-radius: 8px;
+            --ai-color: #8e44ad;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hierarchy Tree Styles */
+        .tree-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .node {
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fff;
+            position: relative;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+
+        .interface {
+            border-left: 5px solid var(--secondary);
+            background-color: #f0f8ff;
+        }
+
+        .class {
+            border-left: 5px solid var(--accent);
+            background-color: #fff5f5;
+            margin-left: 20px; /* Indent classes */
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .type-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            color: white;
+            float: right;
+        }
+
+        .badge-int { background-color: var(--secondary); }
+        .badge-cls { background-color: var(--accent); }
+
+        .methods {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: #555;
+            background: rgba(0,0,0,0.03);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .method-item {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .arrow-down {
+            text-align: center;
+            font-size: 20px;
+            color: #bbb;
+            margin: -5px 0;
+        }
+
+        /* Connector Lines Logic */
+        .branch-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .branch-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note {
+            font-size: 0.8rem;
+            text-align: center;
+            color: #777;
+            margin-top: 20px;
+        }
+        
+        code {
+            background: #eee;
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        /* AI Section Styles */
+        .ai-panel {
+            max-width: 1400px;
+            margin: 40px auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.2); /* Purple glow */
+            padding: 25px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--ai-color);
+            margin-bottom: 20px;
+        }
+
+        .ai-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .ai-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .ai-input:focus {
+            border-color: var(--ai-color);
+        }
+
+        .btn-ai {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            background-color: var(--ai-color);
+            transition: opacity 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-ai:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-ai.secondary {
+            background-color: var(--primary);
+        }
+
+        .ai-output {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            min-height: 100px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', sans-serif;
+            display: none; /* Hidden by default */
+        }
+        
+        .ai-output pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            color: var(--ai-color);
+            display: none;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .branch-container {
+                flex-direction: column;
+            }
+            .class { margin-left: 10px; }
+            .ai-controls { flex-direction: column; }
+            .btn-ai { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Java Collections Hierarchy</h1>
+    <p style="text-align: center;">Blue = Interface (Rules) | Red = Class (Implementation)</p>
+
+    <div class="container">
+        
+        <!-- LEFT SIDE: COLLECTION HIERARCHY -->
+        <div class="tree-section">
+            <h2>1. The Collection Family</h2>
+            
+            <!-- Iterable -->
+            <div class="node interface">
+                <span class="title">Iterable&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                <div class="methods">
+                    <span class="method-item">iterator() &rarr; allows foreach loop</span>
+                </div>
+            </div>
+            <div class="arrow-down">⬇</div>
+
+            <!-- Collection -->
+            <div class="node interface">
+                <span class="title">Collection&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                <div class="methods">
+                    <span class="method-item">add(E e)</span>
+                    <span class="method-item">remove(Object o)</span>
+                    <span class="method-item">contains(Object o)</span>
+                    <span class="method-item">size()</span>
+                    <span class="method-item">isEmpty()</span>
+                    <span class="method-item">clear()</span>
+                    <span class="method-item">toArray()</span>
+                </div>
+            </div>
+            <div class="arrow-down">⬇</div>
+
+            <!-- BRANCHES -->
+            <div class="branch-container">
+                
+                <!-- LIST BRANCH -->
+                <div class="branch-col">
+                    <div class="node interface">
+                        <span class="title">List&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                        <div class="methods">
+                            <span class="method-item">get(int index)</span>
+                            <span class="method-item">set(int index, E e)</span>
+                            <span class="method-item">add(int index, E e)</span>
+                            <span class="method-item">indexOf(Object o)</span>
+                        </div>
+                    </div>
+                    <div class="arrow-down">⬇</div>
+                    <div class="node class">
+                        <span class="title">ArrayList</span>
+                        <div class="methods">Fast access, slow insert.</div>
+                    </div>
+                    <div class="node class">
+                        <span class="title">LinkedList</span>
+                        <div class="methods">Fast insert, slow access.</div>
+                    </div>
+                </div>
+
+                <!-- QUEUE BRANCH -->
+                <div class="branch-col">
+                    <div class="node interface">
+                        <span class="title">Queue&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                        <div class="methods">
+                            <span class="method-item">offer(E e) <span style="color:#888">// safe add</span></span>
+                            <span class="method-item">poll() <span style="color:#888">// remove head</span></span>
+                            <span class="method-item">peek() <span style="color:#888">// view head</span></span>
+                        </div>
+                    </div>
+                    <div class="arrow-down">⬇</div>
+                    <div class="node class">
+                        <span class="title">PriorityQueue</span>
+                        <div class="methods">Sorted by priority.</div>
+                    </div>
+                    <div class="node class">
+                        <span class="title">LinkedList</span>
+                        <div class="methods">Standard FIFO Queue.</div>
+                    </div>
+                </div>
+
+                <!-- SET BRANCH -->
+                <div class="branch-col">
+                    <div class="node interface">
+                        <span class="title">Set&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                        <div class="methods">
+                            <i>No new methods. Enforces uniqueness.</i>
+                        </div>
+                    </div>
+                    <div class="arrow-down">⬇</div>
+                    <div class="node class">
+                        <span class="title">HashSet</span>
+                        <div class="methods">Unordered, Fast (O1).</div>
+                    </div>
+                    <div class="node class">
+                        <span class="title">TreeSet</span>
+                        <div class="methods">Sorted, Slower (LogN).</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: MAP HIERARCHY -->
+        <div class="tree-section">
+            <h2>2. The Map Family</h2>
+            <p style="text-align:center; font-size:0.9rem;">(Maps are NOT Collections. They stand alone.)</p>
+
+            <!-- Map Interface -->
+            <div class="node interface" style="border-left-color: #8e44ad;">
+                <span class="title">Map&lt;K, V&gt; <span class="type-badge badge-int" style="background-color: #8e44ad;">Interface</span></span>
+                <div class="methods">
+                    <span class="method-item">put(K key, V value)</span>
+                    <span class="method-item">get(Object key)</span>
+                    <span class="method-item">getOrDefault(key, default)</span>
+                    <span class="method-item">containsKey(Object key)</span>
+                    <span class="method-item">containsValue(Object val)</span>
+                    <span class="method-item">remove(Object key)</span>
+                    <span class="method-item">size()</span>
+                </div>
+            </div>
+            <div class="arrow-down">⬇</div>
+            
+            <!-- Map Views -->
+            <div class="node interface" style="border-left-color: #8e44ad; border-style: dashed;">
+                <span class="title">Iterating Views</span>
+                <div class="methods">
+                    <span class="method-item">keySet() &rarr; Set&lt;K&gt;</span>
+                    <span class="method-item">values() &rarr; Collection&lt;V&gt;</span>
+                    <span class="method-item">entrySet() &rarr; Set&lt;Entry&gt;</span>
+                </div>
+            </div>
+
+            <div class="arrow-down">⬇</div>
+
+            <!-- Map Classes -->
+            <div class="node class">
+                <span class="title">HashMap</span>
+                <div class="methods">
+                    Fastest. Unordered. Allows 1 null key.
+                </div>
+            </div>
+
+            <div class="node class">
+                <span class="title">LinkedHashMap</span>
+                <div class="methods">
+                    Remembers insertion order.
+                </div>
+            </div>
+
+            <div class="node class">
+                <span class="title">TreeMap</span>
+                <div class="methods">
+                    Sorted by Key (Natural or Custom).
+                </div>
+            </div>
+
+            <div class="node interface" style="margin-top: 30px;">
+                <span class="title">Map.Entry&lt;K,V&gt; <span class="type-badge badge-int">Helper</span></span>
+                <div class="methods">
+                    <span class="method-item">getKey()</span>
+                    <span class="method-item">getValue()</span>
+                    <span class="method-item">setValue(V v)</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GEMINI AI SECTION -->
+    <div class="ai-panel">
+        <div class="ai-header">
+            <h2>✨ Gemini Java Assistant</h2>
+        </div>
+        <p style="text-align: center; margin-bottom: 20px; color: #666;">
+            Stuck? Ask the AI for code examples, explanations, or quiz questions.
+        </p>
+
+        <div class="ai-controls">
+            <input type="text" id="userQuery" class="ai-input" placeholder="e.g., 'Difference between HashMap and TreeMap', 'How to sort a List'...">
+            <button class="btn-ai" onclick="handleExplain()">✨ Explain Concept</button>
+            <button class="btn-ai" onclick="handleCode()">📝 Generate Code</button>
+            <button class="btn-ai secondary" onclick="handleQuiz()">🎓 Quiz Me</button>
+        </div>
+
+        <div id="loading" class="loading-indicator">
+            Thinking... 🤖
+        </div>
+        <div id="aiOutput" class="ai-output"></div>
+    </div>
+
+    <div class="note">
+        * Note: This diagram covers the most commonly used components in interviews and daily development. Legacy classes (Vector, Hashtable) are omitted.
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // IMPORTANT: API Key is injected by the environment at runtime
+        const apiKey = ""; 
+
+        const outputDiv = document.getElementById('aiOutput');
+        const loadingDiv = document.getElementById('loading');
+        const inputField = document.getElementById('userQuery');
+
+        // Helper to call Gemini API
+        async function callGemini(promptText) {
+            showLoading(true);
+            outputDiv.style.display = 'none';
+            outputDiv.innerHTML = '';
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{
+                    parts: [{ text: promptText }]
+                }]
+            };
+
+            try {
+                const response = await fetchWithBackoff(url, payload);
+                if (!response.ok) throw new Error('API Error');
+                
+                const data = await response.json();
+                const rawText = data.candidates[0].content.parts[0].text;
+                
+                // Render nicely
+                outputDiv.innerHTML = formatResponse(rawText);
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                outputDiv.innerHTML = `<span style="color:red;">Error: ${error.message}. Please try again.</span>`;
+                outputDiv.style.display = 'block';
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Exponential Backoff Logic
+        async function fetchWithBackoff(url, payload, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) return response;
+                } catch (e) {
+                    // ignore and retry
+                }
+                await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+            }
+            throw new Error('Failed to connect to AI service after retries.');
+        }
+
+        // formatting Markdown-like text to HTML
+        function formatResponse(text) {
+            // Escape HTML first
+            let safeText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+            // Code Blocks: match ```language ... ``` or just ``` ... ```
+            // We use a regex that handles optional language specifiers
+            safeText = safeText.replace(/```(\w+)?\s*([\s\S]*?)```/g, function(match, lang, code) {
+                return '<pre><code>' + code + '</code></pre>';
+            });
+
+            // Bold **text**
+            safeText = safeText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // New lines
+            // We only replace newlines that aren't inside <pre> tags to avoid breaking code formatting
+            const parts = safeText.split(/(<pre>[\s\S]*?<\/pre>)/g);
+            return parts.map(part => {
+                if (part.startsWith('<pre>')) return part;
+                return part.replace(/\n/g, '<br>');
+            }).join('');
+        }
+
+        function showLoading(isLoading) {
+            loadingDiv.style.display = isLoading ? 'block' : 'none';
+        }
+
+        // --- Button Handlers ---
+
+        function handleExplain() {
+            const query = inputField.value.trim();
+            if (!query) {
+                alert("Please enter a topic to explain (e.g., 'ArrayList').");
+                return;
+            }
+            const systemPrompt = "You are an expert Java Instructor. Explain the following Java Collections concept clearly. Mention Time Complexity (Big O) where relevant. Keep it concise.";
+            callGemini(`${systemPrompt}\n\nTopic: ${query}`);
+        }
+
+        function handleCode() {
+            const query = inputField.value.trim();
+            if (!query) {
+                alert("Please describe the code you need (e.g., 'Sort a Map by value').");
+                return;
+            }
+            const systemPrompt = "You are a Java Expert. Write a clean, runnable Java code snippet for the following request. Use standard Java Collections. Add comments.";
+            callGemini(`${systemPrompt}\n\nRequest: ${query}`);
+        }
+
+        function handleQuiz() {
+            // Ignores input, just generates a question
+            const systemPrompt = "Generate 1 multiple-choice interview question about Java Collections (Lists, Sets, Maps, Queues). format it nicely. Show the Options A, B, C, D. \n\nThen, at the very bottom, add a separator and reveal the correct answer with a brief explanation.";
+            callGemini(systemPrompt);
+        }
+
+    </script>
+
+</body>
+</html>
