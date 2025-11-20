@@ -990,6 +990,225 @@
         </div>
     </div>
 
+    <!-- NEW SECTION: Primitives vs Objects & Arrays -->
+    <div class="ref-section" style="margin-top: 20px;">
+        <h2>7. Primitives vs. Objects & Arrays</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Why <code>int.toString()</code> fails but <code>Integer.toString()</code> works.</p>
+        
+        <div class="ref-grid">
+            
+            <!-- Primitives vs Objects -->
+            <div class="ref-card">
+                <h3>Primitives vs. Wrapper Objects</h3>
+                <div class="method-desc">
+                    <strong>Primitives</strong> (`int`, `char`, `double`) are raw data. They have <strong>NO methods</strong>.
+                </div>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: #555;">
+                    <li>❌ <code>int x = 5; x.toString();</code> // Compile Error</li>
+                    <li>✅ <code>Integer x = 5; x.toString();</code> // Valid</li>
+                    <li>✅ <code>String.valueOf(5);</code> // Static helper required</li>
+                </ul>
+            </div>
+
+            <!-- Primitive Array vs Object Array -->
+            <div class="ref-card">
+                <h3>Primitive Array vs. Object Array</h3>
+                <div class="method-desc">
+                    They are <strong>totally different types</strong>. No Autoboxing between arrays.
+                </div>
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">char[] (Primitive)</span>
+                    </div>
+                    <div class="method-desc">Contiguous memory. Fast. Returned by <code>String.toCharArray()</code>.</div>
+                </div>
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Character[] (Object)</span>
+                    </div>
+                    <div class="method-desc">Array of references. Heavy. No built-in conversion from <code>char[]</code>.</div>
+                </div>
+            </div>
+
+            <!-- Conversion Guide -->
+            <div class="ref-card" style="grid-column: 1 / -1;">
+                <h3>How to Convert? (Primitive Array ↔ Object Array)</h3>
+                <table style="width:100%; font-size: 0.9rem; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid #eee; text-align:left;">
+                        <th style="padding:8px;">Goal</th>
+                        <th style="padding:8px;">Code Strategy</th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding:8px;"><code>String</code> &rarr; <code>char[]</code></td>
+                        <td style="padding:8px;"><div class="code-snippet">char[] arr = str.toCharArray();</div></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding:8px;"><code>String</code> &rarr; <code>Character[]</code></td>
+                        <td style="padding:8px;">
+                            <strong>❌ No direct method.</strong> Must loop or use Streams:<br>
+                            <div class="code-snippet">
+                                Character[] ch = str.chars()<br>
+                                &nbsp;&nbsp;.mapToObj(c -> (char)c)<br>
+                                &nbsp;&nbsp;.toArray(Character[]::new);
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px;"><code>int[]</code> &rarr; <code>Integer[]</code></td>
+                        <td style="padding:8px;">
+                            <strong>❌ No Autoboxing.</strong> Must loop or use Streams:<br>
+                            <div class="code-snippet">
+                                Integer[] arr = Arrays.stream(toIntArray)<br>
+                                &nbsp;&nbsp;.boxed().toArray(Integer[]::new);
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: Wrappers & String Methods -->
+    <div class="ref-section" style="margin-top: 20px;">
+        <h2>8. Wrapper & String Utilities Reference</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Essential methods for Integer, Character, and String.</p>
+        
+        <div class="ref-grid">
+            
+            <!-- Integer Methods -->
+            <div class="ref-card">
+                <h3>Integer / Double Methods</h3>
+                
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Integer.parseInt(String s)</span>
+                    </div>
+                    <div class="method-desc">Parses string to primitive <code>int</code>. Throws exception if invalid.</div>
+                    <div class="code-snippet">int x = Integer.parseInt("123");</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Integer.valueOf(String s)</span>
+                    </div>
+                    <div class="method-desc">Parses string to <code>Integer</code> object (Cached for small numbers).</div>
+                    <div class="code-snippet">Integer x = Integer.valueOf("123");</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Integer.toString(int i)</span>
+                    </div>
+                    <div class="method-desc">Converts number to String.</div>
+                    <div class="code-snippet">String s = Integer.toString(123);</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Integer.compare(int a, int b)</span>
+                    </div>
+                    <div class="method-desc">Returns -1, 0, or 1. Useful for sorting logic.</div>
+                    <div class="code-snippet">Integer.compare(5, 10); // -1</div>
+                </div>
+            </div>
+
+            <!-- Character Methods -->
+            <div class="ref-card">
+                <h3>Character Methods</h3>
+                
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Character.isDigit(char c)</span>
+                    </div>
+                    <div class="method-desc">Checks if character is 0-9.</div>
+                    <div class="code-snippet">boolean b = Character.isDigit('5');</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Character.isLetter(char c)</span>
+                    </div>
+                    <div class="method-desc">Checks if character is a letter (a-z, A-Z).</div>
+                    <div class="code-snippet">boolean b = Character.isLetter('a');</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Character.toLowerCase(char c)</span>
+                    </div>
+                    <div class="method-desc">Converts to lowercase.</div>
+                    <div class="code-snippet">char c = Character.toLowerCase('A');</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">Character.getNumericValue(char c)</span>
+                    </div>
+                    <div class="method-desc">Returns int value of digit char.</div>
+                    <div class="code-snippet">int i = Character.getNumericValue('5'); // 5</div>
+                </div>
+            </div>
+
+            <!-- String Methods -->
+            <div class="ref-card" style="grid-column: 1 / -1;">
+                <h3>Essential String Methods</h3>
+                <div class="ref-grid" style="grid-template-columns: 1fr 1fr; gap: 20px; border:none; padding:0; box-shadow:none;">
+                    
+                    <!-- Col 1 -->
+                    <div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">length()</span></div>
+                            <div class="method-desc">Returns char count.</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">charAt(int index)</span></div>
+                            <div class="method-desc">Returns char at index.</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">substring(start, end)</span></div>
+                            <div class="method-desc">Returns slice. End index is exclusive.</div>
+                            <div class="code-snippet">"hello".substring(1, 3); // "el"</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">indexOf(String s)</span></div>
+                            <div class="method-desc">Returns first index of sub-string or -1.</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">contains(CharSequence s)</span></div>
+                            <div class="method-desc">Returns true if string contains sequence.</div>
+                        </div>
+                    </div>
+
+                    <!-- Col 2 -->
+                    <div>
+                         <div class="method-row">
+                            <div class="method-header"><span class="method-sig">trim() / strip()</span></div>
+                            <div class="method-desc">Removes whitespace from ends.</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">split(String regex)</span></div>
+                            <div class="method-desc">Splits string into String array.</div>
+                            <div class="code-snippet">"a,b".split(","); // ["a", "b"]</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">toCharArray()</span></div>
+                            <div class="method-desc">Converts to primitive <code>char[]</code>.</div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">equals(Object o)</span></div>
+                            <div class="method-desc">Compares values. <span style="color:red;">NEVER use == for Strings!</span></div>
+                        </div>
+                        <div class="method-row">
+                            <div class="method-header"><span class="method-sig">startsWith(prefix)</span></div>
+                            <div class="method-desc">Checks if string starts with prefix.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- GEMINI AI SECTION -->
     <div class="ai-panel">
         <div class="ai-header">
