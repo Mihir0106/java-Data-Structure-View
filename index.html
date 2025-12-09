@@ -470,13 +470,34 @@
                         </div>
                     </div>
                     <div class="arrow-down">⬇</div>
+                    
+                    <!-- Direct Queue Impl -->
                     <div class="node class">
                         <span class="title">PriorityQueue</span>
                         <div class="methods">Sorted by priority.</div>
                     </div>
+
+                    <div class="arrow-down">⬇</div>
+
+                    <!-- Deque Interface -->
+                    <div class="node interface">
+                        <span class="title">Deque&lt;T&gt; <span class="type-badge badge-int">Interface</span></span>
+                        <div class="methods">
+                            <span class="method-item">addFirst() / addLast()</span>
+                            <span class="method-item">pollFirst() / pollLast()</span>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down">⬇</div>
+
+                    <!-- Deque Impls -->
+                    <div class="node class">
+                        <span class="title">ArrayDeque</span>
+                        <div class="methods">Fast Stack/Queue (Array).</div>
+                    </div>
                     <div class="node class">
                         <span class="title">LinkedList</span>
-                        <div class="methods">Standard FIFO Queue.</div>
+                        <div class="methods">Implements List & Deque.</div>
                     </div>
                 </div>
 
@@ -658,6 +679,78 @@
                     </div>
                     <div class="method-desc">Instantly view the top element (root of Heap).</div>
                     <div class="code-snippet">pq.peek();</div>
+                </div>
+            </div>
+
+            <!-- DEQUE METHODS -->
+            <div class="ref-card">
+                <h3>Deque Methods (ArrayDeque)</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <strong>Space:</strong> O(n).<br>
+                    <strong>Use for:</strong> Stacks (LIFO) & Queues (FIFO). Faster than <code>Stack</code>.
+                </p>
+                
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">addFirst(E e) / addLast(E e)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Adds element to head or tail.</div>
+                    <div class="code-snippet">deque.addFirst(1); // [1]</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">pollFirst() / pollLast()</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Retrieves and removes from head or tail.</div>
+                    <div class="code-snippet">deque.pollLast();</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">peekFirst() / peekLast()</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Retrieves (without removing) from head or tail.</div>
+                    <div class="code-snippet">deque.peekFirst();</div>
+                </div>
+            </div>
+
+            <!-- STACK METHODS (LEGACY) -->
+            <div class="ref-card">
+                <h3>Stack Methods (Legacy)</h3>
+                <p class="complexity-detail" style="margin-bottom:10px;">
+                    <span style="color:red; font-weight:bold;">⚠️ DEPRECATED PREFERENCE</span><br>
+                    Extends Vector (Synchronized/Slow). Use <code>ArrayDeque</code> instead.
+                </p>
+                
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">push(E item)</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Pushes item onto the top of the stack.</div>
+                    <div class="code-snippet">stack.push("Card");</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">pop()</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Removes and returns item at the top.</div>
+                    <div class="code-snippet">stack.pop();</div>
+                </div>
+
+                <div class="method-row">
+                    <div class="method-header">
+                        <span class="method-sig">peek()</span>
+                        <span class="complexity">Time: O(1)</span>
+                    </div>
+                    <div class="method-desc">Looks at the top item without removing it.</div>
+                    <div class="code-snippet">stack.peek();</div>
                 </div>
             </div>
 
@@ -907,7 +1000,12 @@
                                                     <span class="mm-node mm-abs">AbstractList</span>
                                                     <ul>
                                                         <li><span class="mm-node mm-cls">ArrayList</span></li>
-                                                        <li><span class="mm-node mm-cls">Vector</span> <span class="mm-legacy">Legacy</span></li>
+                                                        <li>
+                                                            <span class="mm-node mm-cls">Vector</span> <span class="mm-legacy">Legacy</span>
+                                                            <ul>
+                                                                <li><span class="mm-node mm-cls">Stack</span></li>
+                                                            </ul>
+                                                        </li>
                                                         <li>
                                                             <span class="mm-node mm-abs">AbstractSequentialList</span>
                                                             <ul>
